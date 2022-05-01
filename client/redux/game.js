@@ -1,5 +1,7 @@
 const CREATE_GAME = "CREATE_GAME";
 const SET_GAME = "SET_GAME";
+const UPDATE_GAME = "UPDATE_GAME";
+const END_GAME = "END_GAME";
 
 export const createGame = (game) => {
   return {
@@ -15,11 +17,30 @@ export const setGame = (game) => {
   };
 };
 
+export const updateGame = (game) => {
+  return {
+    type: UPDATE_GAME,
+    game,
+  };
+};
+
+export const endGame = () => {
+  console.log("inside redux");
+  return {
+    type: END_GAME,
+    game: {},
+  };
+};
+
 export default function gameReducer(game = {}, action) {
   switch (action.type) {
+    case UPDATE_GAME:
+      return { ...game, ...action.game };
     case CREATE_GAME:
       return action.game;
     case SET_GAME:
+      return action.game;
+    case END_GAME:
       return action.game;
     default:
       return game;

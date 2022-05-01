@@ -6,6 +6,7 @@ module.exports = {
   output: {
     path: __dirname,
     filename: "bundle.js",
+    publicPath: "/",
   },
   devtool: "source-map",
   devServer: {
@@ -14,6 +15,8 @@ module.exports = {
     },
     compress: true,
     port: 9000,
+    hot: false,
+    historyApiFallback: true,
   },
   module: {
     rules: [

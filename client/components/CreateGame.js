@@ -22,7 +22,7 @@ const CreateGame = () => {
   };
 
   const newGameData = () => {
-    const gameId = nanoid();
+    const gameId = nanoid().slice(16);
     const newGameObj = { id: gameId, players: { host: user, player2: null } };
     set(ref(rtDatabase, "games/" + gameId), newGameObj);
     dispatch(createGame(newGameObj));
@@ -44,6 +44,8 @@ const CreateGame = () => {
       }
     });
   };
+
+  console.log("rendering create game with game data: ", game);
 
   return (
     <div id="create">
