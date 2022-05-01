@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { nanoid } from "nanoid";
 import { rtDatabase } from "./utils/firebase";
 import { ref, set, get } from "firebase/database";
@@ -31,7 +32,7 @@ const CreateGame = () => {
     get(ref(rtDatabase, `/games/${gameId}`)).then((snapshot) => {
       if (snapshot.exists()) {
         const gameObj = snapshot.val();
-        set(ref(rtDatabase, `/games/${gameId}/players` + user.id), user);
+        set(ref(rtDatabase, `/games/${gameId}/players/player2`), user);
         dispatch(
           setGame({
             ...gameObj,
@@ -46,6 +47,7 @@ const CreateGame = () => {
 
   return (
     <div id="create">
+      {game.id && <Navigate to={`/game/${game.id}`} />}
       {user.id ? (
         <>
           <div>Welcome, {user.username}</div>
