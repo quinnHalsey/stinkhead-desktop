@@ -2,11 +2,12 @@
   "name": "stinkhead-desktop",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./public/bundle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server",
-    "dev": "webpack server -open --mode=development"
+    "build-watch": "webpack -w",
+    "dev": "webpack-dev-server --mode development",
+    "start:dev": "npm run build-watch & npm run dev"
   },
   "author": "",
   "license": "ISC",
@@ -19,8 +20,10 @@
     "webpack-dev-server": "^4.8.1"
   },
   "dependencies": {
+    "firebase": "^9.7.0",
     "nodemon": "^2.0.16",
     "react": "^18.1.0",
+    "react-router": "^4.3.1",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0"
   }
