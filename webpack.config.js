@@ -17,6 +17,7 @@ module.exports = {
     port: 9000,
     hot: false,
     historyApiFallback: true,
+    liveReload: false,
   },
   module: {
     rules: [

@@ -25,7 +25,6 @@ export const updateGame = (game) => {
 };
 
 export const endGame = () => {
-  console.log("inside redux");
   return {
     type: END_GAME,
     game: {},

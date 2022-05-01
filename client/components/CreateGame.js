@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { nanoid } from "nanoid";
 import { rtDatabase } from "./utils/firebase";
-import { ref, set, get } from "firebase/database";
+import { ref, set, get, update, onValue } from "firebase/database";
 import { createUser } from "../redux/user";
 import { createGame, setGame } from "../redux/game";
 import { useDispatch, useSelector } from "react-redux";
+import { updateUser, removeUser } from "../redux/user";
+
+//TODO: use sessionStorage to keep user's ID and username saved
+//for now: delete users at every end-of-game
 
 const CreateGame = () => {
   const user = useSelector((state) => state.user);
@@ -19,6 +23,7 @@ const CreateGame = () => {
     const newUserObj = { id, username };
     set(ref(rtDatabase, "users/" + id), newUserObj);
     dispatch(createUser(newUserObj));
+    // sessionStorage.setItem("user", user);
   };
 
   const newGameData = () => {
@@ -45,7 +50,11 @@ const CreateGame = () => {
     });
   };
 
-  console.log("rendering create game with game data: ", game);
+  const handleJoinRoom = (evt) => {
+    evt.preventDefault();
+    console.log("running form submit");
+    validateGameId(joinGameId);
+  };
 
   return (
     <div id="create">
@@ -54,16 +63,15 @@ const CreateGame = () => {
         <>
           <div>Welcome, {user.username}</div>
           Create a game!
-          <button type="button" onClick={() => newGameData()}>
-            Create!
-          </button>
-          <form
-            onSubmit={(evt) => {
-              evt.preventDefault();
-              console.log("Join room with id: ", joinGameId);
-              validateGameId(joinGameId);
+          <button
+            type="button"
+            onClick={() => {
+              newGameData();
             }}
           >
+            Create!
+          </button>
+          <form onSubmit={handleJoinRoom}>
             <label htmlFor="room-id">Join room with a room ID:</label>
             <input
               name="room-id"
