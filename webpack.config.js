@@ -6,7 +6,7 @@ module.exports = {
   output: {
     path: __dirname,
     filename: "bundle.js",
-    publicPath: "/",
+    publicPath: "/stinkhead-desktop",
   },
   devtool: "source-map",
   devServer: {
