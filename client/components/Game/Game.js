@@ -9,6 +9,7 @@ import { updateGame, endGame } from "../../redux/game";
 import { updateUser, removeUser } from "../../redux/user";
 
 import Players from "./Players";
+import Canvas from "./Canvas";
 
 //TODO: security measures so unauthorized players can't join a random room with a URL
 //Requires refactoring User logic to sustain even if browser accidentally refreshes, so they can revisit url or rejoin game room?
@@ -47,35 +48,11 @@ const Game = () => {
     dispatch(endGame());
   };
 
-  const startGame = async () => {
-    console.log("starting game");
-    await set(ref(rtDatabase, `games/${gameId}/turn`), "host");
-    await set(ref(rtDatabase, `games/${gameId}/status`), "playing");
-  };
-
-  //FIREBASE REFERENCES
-  //   onValue(gameRef, (snapshot) => {
-  //     const gameData = snapshot.val();
-  //     console.log(gameData, "game data");
-  //     if (gameData === null && user.role !== "host") {
-  //       leaveGameDisp();
-  //       return;
-  //     }
-  //     if (gameData && gameData.status === "playing" && user.role !== "host") {
-  //       startGame();
-  //     }
-  //     dispatch(() => updateGame(gameData));
-  //   });
-
-  //   onValue(userRef, (snapshot) => {
-  //     const userData = snapshot.val();
-  //     console.log(userData, "userData");
-  //     if (userData === null) {
-  //       dispatch(removeUser());
-  //       return;
-  //     }
-  //     dispatch(() => updateUser(userData));
-  //   });
+  //   const startGame = async () => {
+  //     console.log("starting game");
+  //     await set(ref(rtDatabase, `games/${gameId}/turn`), "host");
+  //     await set(ref(rtDatabase, `games/${gameId}/status`), "playing");
+  //   };
 
   if (!game.id) {
     return <Navigate to="/" />;
@@ -85,18 +62,19 @@ const Game = () => {
     <div>
       {user.role === "host" && (
         <>
-          <button type="button" onClick={() => leaveGameDisp()}>
-            End Game
-          </button>
-          <button type="button" onClick={() => startGame()}>
+          {/* <button type="button" onClick={() => leaveGameDisp()}>
+            End Session
+          </button> */}
+          {/* <button type="button" onClick={() => startGame()}>
             Start Game
-          </button>
+          </button> */}
         </>
       )}
-      You are playing in game room {gameId}
+      You are drawing in room: {gameId}
       <div id="players-container">
         <Players gameRef={gameRef} user={user} gameId={gameId} />
       </div>
+      <Canvas />
     </div>
   );
 };
