@@ -1,10 +1,20 @@
 import React, { useRef, useEffect, useState } from "react";
-import Controls from "./Controls";
 
-const Canvas = () => {
+import { rtDatabase } from "../utils/firebase";
+import { ref, onValue, update, set } from "firebase/database";
+
+import Controls from "./Controls";
+import { useSelector } from "react-redux";
+
+const Canvas = ({ gameId }) => {
   const canvasRef = useRef();
+  const user = useSelector((state) => state.user);
   const [locations, setLocations] = useState([]);
   const [color, setColor] = useState("black");
+
+  const collabRole = user.role === "host" ? "player2" : "host";
+
+  let collabLocations = [];
 
   const draw = (ctx, location) => {
     ctx.fillStyle = location.color;
@@ -15,13 +25,42 @@ const Canvas = () => {
     ctx.fill();
     ctx.restore();
   };
+  //   const userLocationsRef = ref(rtDatabase, `games/${gameId}/locations`);
+  const collabLocationsRef = ref(
+    rtDatabase,
+    `games/${gameId}/players/${collabRole}/locations`
+  );
 
-  useEffect(() => {
+  onValue(collabLocationsRef, (snapshot) => {
+    const locationsString = snapshot.val();
+    const locationsParsed = JSON.parse(locationsString);
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.height, canvas.width);
+    console.log(locationsParsed, "parsed locations for other user");
+    if (Array.isArray(locationsParsed)) {
+      collabLocations = locationsParsed;
+      locationsParsed.forEach((location) => draw(ctx, location));
+      locations.forEach((location) => draw(ctx, location));
+    }
+  });
+
+  useEffect(() => {
+    if (locations.length) {
+      set(
+        ref(rtDatabase, `games/${gameId}/players/${user.role}/locations`),
+        JSON.stringify(locations)
+      );
+    }
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
     console.log(locations, "locations");
     locations.forEach((location) => draw(ctx, location));
+    console.log(collabLocations, "collab locations in use Effect");
+    if (Array.isArray(collabLocations)) {
+      collabLocations.forEach((location) => draw(ctx, location));
+    }
   }, [locations]);
 
   const handleClear = () => {
@@ -44,7 +83,9 @@ const Canvas = () => {
             y: event.clientY,
             color: color,
           };
-          setLocations((state) => [...state, newLocation]);
+          if (!locations.includes(JSON.stringify(newLocation))) {
+            setLocations((state) => [...state, newLocation]);
+          }
         }}
         id="canvas"
       ></canvas>

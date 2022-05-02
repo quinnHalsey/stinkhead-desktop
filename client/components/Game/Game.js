@@ -38,15 +38,15 @@ const Game = () => {
   const gameRef = ref(rtDatabase, `games/${gameId}`);
   const userRef = ref(rtDatabase, `users/${user.id}`);
 
-  const leaveGameDisp = async () => {
-    if (user.role === "host") {
-      await set(ref(rtDatabase, `games/${gameId}`), null);
-    }
-    await set(ref(rtDatabase, `/users/${user.id}`), {});
-    dispatch(removeUser());
-    // await set(ref(rtDatabase, `/users/${user.id}/role`), null); // TODO: remove user role when game ends if sustaining user info
-    dispatch(endGame());
-  };
+  //   const leaveGameDisp = async () => {
+  //     if (user.role === "host") {
+  //       await set(ref(rtDatabase, `games/${gameId}`), null);
+  //     }
+  //     await set(ref(rtDatabase, `/users/${user.id}`), {});
+  //     dispatch(removeUser());
+  //     // await set(ref(rtDatabase, `/users/${user.id}/role`), null); // TODO: remove user role when game ends if sustaining user info
+  //     dispatch(endGame());
+  //   };
 
   //   const startGame = async () => {
   //     console.log("starting game");
@@ -74,7 +74,7 @@ const Game = () => {
       <div id="players-container">
         <Players gameRef={gameRef} user={user} gameId={gameId} />
       </div>
-      <Canvas />
+      <Canvas gameId={gameId} />
     </div>
   );
 };

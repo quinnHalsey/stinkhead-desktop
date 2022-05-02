@@ -16,20 +16,13 @@ const Players = ({ gameRef, user, gameId }) => {
   const [players, setPlayers] = useState({});
 
   const prevPlayersRef = useRef(players);
-  console.log(prevPlayersRef, "prev players ref");
 
   const playersRef = ref(rtDatabase, `games/${gameId}/players`);
-
-  console.log(playersRef, "playersRef");
-
-  console.log(game, "game in players");
 
   useEffect(() => {
     onValue(playersRef, (snapshot) => {
       const players = snapshot.val();
-      console.log(players, "players in playersRef on value");
       if (!prevPlayersRef.current.player2 && players.player2) {
-        console.log("inside if statement");
         setPlayers(players);
       }
     });
