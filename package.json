@@ -2,6 +2,7 @@
   "name": "stinkhead-desktop",
   "version": "1.0.0",
   "description": "",
+  "homepage": "https://quinnHalsey.github.io/stinkhead-desktop/",
   "main": "./public/bundle.js",
   "scripts": {
     "start": "node main",
