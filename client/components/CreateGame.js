@@ -57,47 +57,49 @@ const CreateGame = () => {
   };
 
   return (
-    <div id="create">
-      {game.id && <Navigate to={`/game/${game.id}`} />}
-      {user.id ? (
-        <>
-          <div>Welcome, {user.username}</div>
-          Create a game!
-          <button
-            type="button"
-            onClick={() => {
-              newGameData();
+    <div id="signInBackground">
+      <div id="create">
+        {game.id && <Navigate to={`/game/${game.id}`} />}
+        {user.id ? (
+          <>
+            <div>Welcome, {user.username}</div>
+            Create a game!
+            <button
+              type="button"
+              onClick={() => {
+                newGameData();
+              }}
+            >
+              Create!
+            </button>
+            <form onSubmit={handleJoinRoom}>
+              <label htmlFor="room-id">Join room with a room ID:</label>
+              <input
+                name="room-id"
+                type="text"
+                value={joinGameId}
+                onChange={(evt) => setJoinGameId(evt.target.value)}
+              />
+              <button type="submit">Join game</button>
+            </form>
+          </>
+        ) : (
+          <form
+            onSubmit={(evt) => {
+              evt.preventDefault();
+              newUser();
             }}
           >
-            Create!
-          </button>
-          <form onSubmit={handleJoinRoom}>
-            <label htmlFor="room-id">Join room with a room ID:</label>
+            <label htmlFor="username">Enter a username:</label>
             <input
-              name="room-id"
+              name="username"
               type="text"
-              value={joinGameId}
-              onChange={(evt) => setJoinGameId(evt.target.value)}
+              value={username}
+              onChange={(evt) => setUsername(evt.target.value)}
             />
-            <button type="submit">Join game</button>
           </form>
-        </>
-      ) : (
-        <form
-          onSubmit={(evt) => {
-            evt.preventDefault();
-            newUser();
-          }}
-        >
-          <label htmlFor="username">Enter a username:</label>
-          <input
-            name="username"
-            type="text"
-            value={username}
-            onChange={(evt) => setUsername(evt.target.value)}
-          />
-        </form>
-      )}
+        )}
+      </div>
     </div>
   );
 };

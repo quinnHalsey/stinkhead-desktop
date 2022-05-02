@@ -4,9 +4,9 @@ module.exports = {
   mode: "development",
   entry: { app: "./client/index.js" },
   output: {
-    path: __dirname,
+    path: "/",
     filename: "bundle.js",
-    publicPath: "/stinkhead-desktop",
+    // publicPath: "/stinkhead-desktop",
   },
   devtool: "source-map",
   devServer: {
