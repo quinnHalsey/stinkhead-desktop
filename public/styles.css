@@ -36,3 +36,39 @@ button:hover {
 button:focus {
   border: 1px solid #00baff;
 }
+
+#colors {
+  margin: auto;
+  top: 10px;
+  display: flex;
+  gap: 5px;
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+.color {
+  border-radius: 50px;
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+}
+.red {
+  background-color: red;
+}
+
+.blue {
+  background-color: #001c9b;
+}
+
+.yellow {
+  background-color: yellow;
+}
+.green {
+  background-color: green;
+}
+
+.eraser {
+  background-color: white;
+}

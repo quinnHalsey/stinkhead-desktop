@@ -60,7 +60,7 @@ const Players = ({ gameRef, user, gameId }) => {
       </div>
       {players.player2 && (
         <div>
-          <strong>Player 2: </strong>
+          <strong>Doodler 2: </strong>
           {players.player2.username}
         </div>
       )}

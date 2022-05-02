@@ -70,7 +70,11 @@ const Game = () => {
           </button> */}
         </>
       )}
-      You are drawing in room: {gameId}
+      You are drawing in room:{" "}
+      <span>
+        <strong>{gameId}</strong>
+      </span>
+      .
       <div id="players-container">
         <Players gameRef={gameRef} user={user} gameId={gameId} />
       </div>
