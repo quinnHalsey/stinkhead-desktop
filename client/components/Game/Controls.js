@@ -1,23 +1,43 @@
 import React from "react";
 
-const Controls = ({ handleClear, handleUndo, setColor }) => {
+const Controls = ({ handleClear, handleSave, setColor, color }) => {
   return (
     <>
       <div id="colors">
-        <div className="color red" onClick={() => setColor("red")} />
-        <div className="color blue" onClick={() => setColor("#001c9b")} />
-        <div className="color green" onClick={() => setColor("green")} />
-        <div className="color yellow" onClick={() => setColor("yellow")} />
-        <div className="color eraser" onClick={() => setColor("white")} />
+        <div
+          className={`black ${color === "black" ? "selected color" : "color"}`}
+          onClick={() => setColor("black")}
+        />
+        <div
+          className={`red ${color === "red" ? "selected color" : "color"}`}
+          onClick={() => setColor("red")}
+        />
+        <div
+          className={`blue ${color === "#001c9b" ? "selected color" : "color"}`}
+          onClick={() => setColor("#001c9b")}
+        />
+        <div
+          className={`green ${color === "green" ? "selected color" : "color"}`}
+          onClick={() => setColor("green")}
+        />
+        <div
+          className={`yellow ${
+            color === "yellow" ? "selected color" : "color"
+          }`}
+          onClick={() => setColor("yellow")}
+        />
+        <div
+          className={`eraser ${color === "white" ? "selected color" : "color"}`}
+          onClick={() => setColor("white")}
+        />
       </div>
       <div id="controls-container">
         <button type="button" onClick={handleClear}>
           Clear
         </button>
-        <button type="button" onClick={handleUndo}>
-          Undo
-        </button>
-        <button type="button">Save</button>
+        {/* <button type="button" onClick={handleSave}>
+          Save
+        </button> */}
       </div>
     </>
   );

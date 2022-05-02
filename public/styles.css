@@ -12,7 +12,7 @@
   right: 10px;
   display: flex;
   gap: 10px;
-  width: 12em;
+  width: auto;
   align-items: right;
 }
 
@@ -50,9 +50,12 @@ button:focus {
 
 .color {
   border-radius: 50px;
-  border: 1px solid black;
   width: 30px;
   height: 30px;
+}
+
+.selected {
+  outline: 1px solid black;
 }
 .red {
   background-color: red;
@@ -69,6 +72,15 @@ button:focus {
   background-color: green;
 }
 
+.black {
+  background-color: black;
+}
+
+.black.selected {
+  outline: 1px solid blue;
+}
+
 .eraser {
   background-color: white;
+  outline: 0.5px grey solid;
 }

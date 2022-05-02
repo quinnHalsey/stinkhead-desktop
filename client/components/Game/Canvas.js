@@ -1,7 +1,7 @@
-import React, { useRef, useEffect, useState, useDebugValue } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import { rtDatabase } from "../utils/firebase";
-import { ref, onValue, update, set } from "firebase/database";
+import { ref, onValue, set, get } from "firebase/database";
 
 import Controls from "./Controls";
 import { useSelector } from "react-redux";
@@ -48,38 +48,6 @@ const Canvas = ({ gameId }) => {
     `games/${gameId}/players/${collabRole}/locations`
   );
 
-  //   onValue(collabLocationsRef, (snapshot) => {
-  //     const locationsString = snapshot.val();
-  //     const locationsParsed = JSON.parse(locationsString);
-  //     const canvas = canvasRef.current;
-  //     const ctx = canvas.getContext("2d");
-  //     ctx.clearRect(0, 0, canvas.height, canvas.width);
-
-  //     // if (Array.isArray(locationsParsed)) {
-  //     //   collabLocations = locationsParsed;
-  //     //   locationsParsed.forEach((location) => draw(ctx, location));
-  //     //   locations.forEach((location) => draw(ctx, location));
-  //     // }
-  //   });
-
-  //   this.socket.on("canvas-data", function(data){
-
-  //     var root = this;
-  //     var interval = setInterval(function(){
-  //         if(root.isDrawing) return;
-  //         root.isDrawing = true;
-  //         clearInterval(interval);
-  //         var image = new Image();
-  //         var canvas = document.querySelector('#board');
-  //         var ctx = canvas.getContext('2d');
-  //         image.onload = function() {
-  //             ctx.drawImage(image, 0, 0);
-
-  //             root.isDrawing = false;
-  //         };
-  //         image.src = data;
-  //     }, 200)
-
   const drawingRef = ref(rtDatabase, `games/${gameId}/drawing`);
 
   onValue(drawingRef, (snapshot) => {
@@ -103,6 +71,7 @@ const Canvas = ({ gameId }) => {
       );
     }
     const canvas = canvasRef.current;
+
     const ctx = canvas.getContext("2d");
 
     // console.log(locations, "locations");
@@ -114,11 +83,37 @@ const Canvas = ({ gameId }) => {
   }, [locations]);
 
   const handleClear = () => {
-    setLocations([]);
+    setDrawing(false);
+    set(ref(rtDatabase, `games/${gameId}/drawing`), "");
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.height, canvas.width);
   };
 
-  const handleUndo = () => {
-    setLocations(locations.slice(0, -1));
+  //   get(ref(rtDatabase, `/games/${gameId}`)).then((snapshot) => {
+  //     if (snapshot.exists()) {
+  //       const gameObj = snapshot.val();
+  //       set(ref(rtDatabase, `/games/${gameId}/players/player2`), user);
+  //       dispatch(
+  //         setGame({
+  //           ...gameObj,
+  //           players: { ...gameObj.players, player2: user },
+  //         })
+  //       );
+  //     } else {
+  //       alert(`Game room with id: ${gameId} does not exist.`);
+  //     }
+  //   });
+
+  const handleSave = () => {
+    let image;
+    get(ref(rtDatabase, `games/${gameId}/drawing`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        image = new Image();
+        image.src = snapshot.val();
+      }
+    });
+    window.saveAs("doodle-collab", image);
   };
 
   return (
@@ -162,9 +157,10 @@ const Canvas = ({ gameId }) => {
       ></canvas>
       <Controls
         handleClear={handleClear}
-        handleUndo={handleUndo}
         setColor={setColor}
         setSize={setSize}
+        handleSave={handleSave}
+        color={color}
       />
     </>
   );
