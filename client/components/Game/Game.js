@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { Link, Navigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import { rtDatabase } from "../utils/firebase";
 import { ref, onValue, update, set } from "firebase/database";
-import { useDispatch, useSelector } from "react-redux";
+
 import { updateGame, endGame } from "../../redux/game";
-import { Link, Navigate, useLocation } from "react-router-dom";
 import { updateUser, removeUser } from "../../redux/user";
+
+import Players from "./Players";
 
 //TODO: security measures so unauthorized players can't join a random room with a URL
 //Requires refactoring User logic to sustain even if browser accidentally refreshes, so they can revisit url or rejoin game room?
@@ -50,18 +54,18 @@ const Game = () => {
   };
 
   //FIREBASE REFERENCES
-  onValue(gameRef, (snapshot) => {
-    const gameData = snapshot.val();
-    console.log(gameData, "game data");
-    if (gameData === null && user.role !== "host") {
-      leaveGameDisp();
-      return;
-    }
-    if (gameData && gameData.status === "playing" && user.role !== "host") {
-      startGame();
-    }
-    dispatch(() => updateGame(gameData));
-  });
+  //   onValue(gameRef, (snapshot) => {
+  //     const gameData = snapshot.val();
+  //     console.log(gameData, "game data");
+  //     if (gameData === null && user.role !== "host") {
+  //       leaveGameDisp();
+  //       return;
+  //     }
+  //     if (gameData && gameData.status === "playing" && user.role !== "host") {
+  //       startGame();
+  //     }
+  //     dispatch(() => updateGame(gameData));
+  //   });
 
   //   onValue(userRef, (snapshot) => {
   //     const userData = snapshot.val();
@@ -73,9 +77,12 @@ const Game = () => {
   //     dispatch(() => updateUser(userData));
   //   });
 
+  if (!game.id) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <div>
-      {!game.id && <Navigate to="/" />}
       {user.role === "host" && (
         <>
           <button type="button" onClick={() => leaveGameDisp()}>
@@ -87,6 +94,9 @@ const Game = () => {
         </>
       )}
       You are playing in game room {gameId}
+      <div id="players-container">
+        <Players gameRef={gameRef} user={user} gameId={gameId} />
+      </div>
     </div>
   );
 };

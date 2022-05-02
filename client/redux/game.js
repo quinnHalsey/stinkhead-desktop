@@ -32,6 +32,7 @@ export const endGame = () => {
 };
 
 export default function gameReducer(game = {}, action) {
+  console.log("inside game reducer");
   switch (action.type) {
     case UPDATE_GAME:
       return { ...game, ...action.game };

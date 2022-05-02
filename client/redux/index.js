@@ -4,11 +4,13 @@ import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import userReducer from "./user";
 import gameReducer from "./game";
+import players from "./players";
 
 //App Reducer
 const reducer = combineReducers({
   user: userReducer,
   game: gameReducer,
+  players,
 });
 
 //Middleware
